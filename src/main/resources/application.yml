@@ -1,0 +1,78 @@
+spring.profiles.active: local
+---
+spring:
+  profiles: local
+  application:
+    name: demo-thailife
+ # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 159753
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: none # When you launch the application for the first time - switch "none" at "create"
+      allow_update_outside_transaction: false
+    show-sql: true
+    database: postgresql
+    properties:
+      hibernate:
+        allow_update_outside_transaction: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: test
+      javax:
+        persistence:
+          query:
+            timeout: 63000
+      
+# Server configuration
+server:
+  servlet:
+     context-path: /demo
+  port: 8080
+# Logger configuration
+logging:
+  path: E:\Work\thai life\logs
+  file: ${logging.path}/log-${spring.application.name}.log
+  
+---
+spring:
+  profiles: dev
+  application:
+    name: demo-thailife
+ # Database
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://10.102.60.68:5432/postgres
+    username: postgres
+    password: 159753
+  # JPA properties
+  jpa:
+    hibernate:
+      ddl-auto: none # When you launch the application for the first time - switch "none" at "create"
+      allow_update_outside_transaction: false
+    show-sql: true
+    database: postgresql
+    properties:
+      hibernate:
+        allow_update_outside_transaction: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: test
+      javax:
+        persistence:
+          query:
+            timeout: 63000
+      
+# Server configuration
+server:
+  servlet:
+    context-path: /demo
+  port: 8080
+# Logger configuration
+logging:
+  path: E:\Work\thai life\logs
+  file: ${logging.path}/log-${spring.application.name}.log
+  
+
