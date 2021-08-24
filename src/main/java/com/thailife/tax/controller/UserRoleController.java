@@ -102,6 +102,20 @@ public class UserRoleController {
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
+	@PostMapping(value = "/searchRoleByUser", produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<UserRoleObjC> searchRoleByUser(@RequestBody UserRoleObjC userRoleObjC) {
+		logger.error("searchRoleByUser find by id Start .....");
+		String result = "Success";
+		try {
+			userRoleObjC = userRoleService.searchByUserName(userRoleObjC);
+			
+		} catch (Exception e) {
+			result = "fail";
+			logger.error("searchRoleByUser find by id Error ...",e);
+		}
+		return new ResponseEntity<>(userRoleObjC, HttpStatus.OK);
+	}
+	
 	@PostMapping(value = "/searchUserRole", produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<UserRoleObjC> searchRole(@RequestBody UserRoleObjC userRoleObjC) {
 		logger.error("listRole find by id Start .....");

@@ -279,5 +279,50 @@ public class UserRoleService extends ServiceBase {
 		}
 		return result;
 	}
+	
+	public UserRoleObjC searchByUserName(UserRoleObjC userRoleObjC){
+		List<UserRole> listUserRole = null;
+		String result = "Success";
+		ModelMapper modelMapper = new ModelMapper();
+		List<UserRoleObj> listUserRoleObj = new ArrayList<>();
+		try {
+			logger.error("Start service searchByUserName .........");
+			List<UserRole> listUserRoleEntity = new ArrayList<UserRole>();
+			
+			listUserRole = new ArrayList<>();
+			listUserRole = userRoleRepository.findByUserName(userRoleObjC.getUserName());
+			if(null != listUserRole && listUserRole.size() > 0){
+				for(int i=0 ; i < listUserRole.size();i++){
+					Role role = new Role();
+					User user = new User();
+					UserRoleObj userRole = modelMapper.map(listUserRole.get(i),UserRoleObj.class);
+					role = roleRepository.searchDataById(listUserRole.get(i).getRoleId());
+					user = userRepository.findByUserId(listUserRole.get(i).getUserId());
+					RoleObj roleObj = modelMapper.map(role, RoleObj.class);
+					UserObj userObj = modelMapper.map(user, UserObj.class);
+					userRole.setId(listUserRole.get(i).getId());
+					userRole.setRoleId(roleObj.getId());
+					userRole.setRoleObj(roleObj);
+					userRole.setUserId(userObj.getId());
+					userRole.setUserObj(userObj);
+					userRole.setGroupId(listUserRole.get(i).getGroupId());
+					userRole.setCreateBy(listUserRole.get(i).getCreateBy());
+					userRole.setCreateDate(listUserRole.get(i).getCreateDate());
+					userRole.setUpdateBy(listUserRole.get(i).getUpdateBy());
+					userRole.setUpdateDate(listUserRole.get(i).getUpdateDate());
+					userRole.setStatus(listUserRole.get(i).getStatus());
+					listUserRoleObj.add(userRole);
+				}
+				
+				userRoleObjC.setListUserRoleObj(listUserRoleObj);
+			}
+				
+			
+			logger.error("End service searchByUserName .........");
+		}catch(Exception e){
+			logger.error("searchByUserName service Error",e);
+		}
+		return userRoleObjC;
+	}
 
 }
