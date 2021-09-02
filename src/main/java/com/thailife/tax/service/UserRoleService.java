@@ -27,6 +27,7 @@ import com.thailife.tax.repository.UserRepository;
 import com.thailife.tax.repository.UserRoleRepository;
 import com.thailife.tax.repository.custom.UserRoleCustomRepository;
 import com.thailife.tax.utils.IdGenerator;
+import com.thailife.tax.utils.SecurityUtils;
 
 @Service
 public class UserRoleService extends ServiceBase {
@@ -62,7 +63,7 @@ public class UserRoleService extends ServiceBase {
 				userRole.setGroupId(groupId);
 				userRole.setRoleId(userRoleObj.getRoleId());
 				userRole.setUserId(userRoleObj.getListUserId().get(i));
-				userRole.setCreateBy("User01");
+				userRole.setCreateBy(SecurityUtils.getUserName());
 				userRole.setCreateDate(new Date());
 				userRole.setStatus(ApplicationConstant.STATUS_ACTIVE);
 				listUserRoleEntity.add(userRole);
@@ -90,7 +91,7 @@ public class UserRoleService extends ServiceBase {
 					userRole.setUserId(userRoleObj.getListUserId().get(i));
 					userRole.setCreateBy(listDeleteUserRoleEntity.get(0).getCreateBy());;
 					userRole.setCreateDate(listDeleteUserRoleEntity.get(0).getCreateDate());;
-					userRole.setUpdateBy("User01");
+					userRole.setUpdateBy(SecurityUtils.getUserName());
 					userRole.setUpdateDate(new Date());
 					userRole.setStatus(ApplicationConstant.STATUS_ACTIVE);
 					listUserRoleEntity.add(userRole);
@@ -220,7 +221,13 @@ public class UserRoleService extends ServiceBase {
 					status = "ST";
 				}
 			}
-			listUserRoleEntity = userRoleRepository.searchUserRole(userRoleObjC.getUserName(),userRoleObjC.getRoleName(),status);
+			if(!("").equals(userRoleObjC.getUserName()) && ("").equals(userRoleObjC.getRoleName())){
+				listUserRoleEntity = userRoleRepository.searchUserName(userRoleObjC.getUserName(),status);
+			}else if(("").equals(userRoleObjC.getUserName()) && !("").equals(userRoleObjC.getRoleName())){
+				listUserRoleEntity = userRoleRepository.searchRoleName(userRoleObjC.getRoleName(),status);
+			}else{
+				listUserRoleEntity = userRoleRepository.searchUserNameAndRoleName(userRoleObjC.getUserName(),userRoleObjC.getRoleName(),status);
+			}
 			for(int i=0 ; i < listUserRoleEntity.size();i++){
 				Role role = new Role();
 				User user = new User();
@@ -263,6 +270,9 @@ public class UserRoleService extends ServiceBase {
 					if(null != userRole.getGroupId()){
 						listUserRoleEntity = userRoleRepository.findByGroupIdUserRole(userRole.getGroupId());
 						for(int f =0 ; f < listUserRoleEntity.size();f++ ){
+							
+							listUserRoleEntity.get(f).setUpdateBy(SecurityUtils.getUserName());
+							listUserRoleEntity.get(f).setUpdateDate(new Date());
 							listUserRoleEntity.get(f).setStatus(ApplicationConstant.STATUS_INACTIVE);
 						}
 						userRoleCustomRepository.updateEntityList(listUserRoleEntity);
@@ -280,6 +290,28 @@ public class UserRoleService extends ServiceBase {
 		return result;
 	}
 	
+	public String deleteUserAllRole(UserRoleObjC userRoleObjC){
+		String result = "Success";
+		ModelMapper modelMapper = new ModelMapper();
+		List<UserRole> listUserRoleEntity = new ArrayList<>();
+		try {
+			logger.error("Start service deleteUserAllRole .........");
+				for(int h= 0 ; h <userRoleObjC.getListUserRoleObj().size();h++){
+					UserRole userRole = modelMapper.map(userRoleObjC.getListUserRoleObj().get(h),UserRole.class);
+					userRole.setStatus(ApplicationConstant.STATUS_INACTIVE);
+					userRole.setUpdateBy(SecurityUtils.getUserName());
+					userRole.setUpdateDate(new Date());
+					listUserRoleEntity.add(userRole);
+						
+				}
+				userRoleCustomRepository.updateEntityList(listUserRoleEntity);
+			logger.error("End service deleteUserAllRole .........");
+		}catch(Exception e){
+			logger.error("deleteUserAllRole service Error",e);
+		}
+		return result;
+	}
+	
 	public UserRoleObjC searchByUserName(UserRoleObjC userRoleObjC){
 		List<UserRole> listUserRole = null;
 		String result = "Success";
@@ -290,7 +322,7 @@ public class UserRoleService extends ServiceBase {
 			List<UserRole> listUserRoleEntity = new ArrayList<UserRole>();
 			
 			listUserRole = new ArrayList<>();
-			listUserRole = userRoleRepository.findByUserName(userRoleObjC.getUserName());
+			listUserRole = userRoleRepository.findByUserRoleByUserName(userRoleObjC.getUserName());
 			if(null != listUserRole && listUserRole.size() > 0){
 				for(int i=0 ; i < listUserRole.size();i++){
 					Role role = new Role();

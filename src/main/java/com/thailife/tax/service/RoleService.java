@@ -27,6 +27,7 @@ import com.thailife.tax.repository.RoleRepository;
 import com.thailife.tax.repository.custom.RoleCustomRepository;
 import com.thailife.tax.repository.custom.RoleMenuCustomRepository;
 import com.thailife.tax.utils.IdGenerator;
+import com.thailife.tax.utils.SecurityUtils;
 
 @Service
 public class RoleService extends ServiceBase {
@@ -77,7 +78,7 @@ public class RoleService extends ServiceBase {
 			if (!result.equals(ApplicationConstant.DUPLICATE)) {
 				roleObj.setId(IdGenerator.getId());
 				Role roleEntity = modelMapper.map(roleObj, Role.class);
-				roleEntity.setCreateBy("User01");
+				roleEntity.setCreateBy(SecurityUtils.getUserName());
 				roleEntity.setCreateDate(new Date());
 				roleEntity.setStatus(ApplicationConstant.STATUS_ACTIVE);
 				roleEntity = roleRepositoryCustom.saveEntity(roleEntity);
@@ -110,7 +111,7 @@ public class RoleService extends ServiceBase {
 				List<RoleMenu> listRoleMenuEntity = new ArrayList<RoleMenu>();
 				List<RoleMenu> listRoleMenuDeleteEntity = new ArrayList<RoleMenu>();
 				Role roleEntity = modelMapper.map(roleObj, Role.class);
-				roleEntity.setUpdateBy("User01");
+				roleEntity.setUpdateBy(SecurityUtils.getUserName());
 				roleEntity.setUpdateDate(new Date());
 				roleEntity = roleRepositoryCustom.updateEntity(roleEntity);
 				listRoleMenuDeleteEntity = roleMenuService.searchDataByRoleId(roleObj.getId());
@@ -209,6 +210,8 @@ public class RoleService extends ServiceBase {
 						role = roleRepository.searchDataById(roleObjC.getListRoleObj().get(h).getId());
 						listRoleMenuEntity = roleMenuService.searchDataByRoleId(role.getId());
 						roleMenuRepositoryCustom.deleteEntityList(listRoleMenuEntity);
+						role.setUpdateBy(SecurityUtils.getUserName());
+						role.setUpdateDate(new Date());
 						role.setStatus(ApplicationConstant.STATUS_INACTIVE);
 						roleRepositoryCustom.updateEntity(role);
 						result = ApplicationConstant.SUCCESS;

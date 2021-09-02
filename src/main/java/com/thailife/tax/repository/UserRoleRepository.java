@@ -40,8 +40,17 @@ public interface UserRoleRepository extends JpaRepository<UserRole, String>, Jpa
 	@Query("SELECT ur FROM UserRole ur JOIN User u on u.id = ur.userId where u.userName =:userName")
     public List<UserRole> findByUserName(@Param("userName") String userName);
 	
-	@Query("SELECT ur FROM UserRole ur JOIN User u on u.id = ur.userId JOIN Role r on r.id = ur.roleId where (u.userName LIKE CONCAT(:userName,'%') or r.roleName LIKE CONCAT(:roleName,'%')) and ur.status LIKE CONCAT(:status,'%')")
-    public List<UserRole> searchUserRole(@Param("userName") String userName,@Param("roleName") String roleName,@Param("status") String status);
+	@Query("SELECT ur FROM UserRole ur JOIN User u on u.id = ur.userId where u.userName =:userName and ur.status='ST001'")
+    public List<UserRole> findByUserRoleByUserName(@Param("userName") String userName);
+	
+	@Query("SELECT ur FROM UserRole ur JOIN User u on u.id = ur.userId JOIN Role r on r.id = ur.roleId where ((u.userName LIKE CONCAT(:userName,'%')) and (r.roleName LIKE CONCAT(:roleName,'%'))) and ur.status LIKE CONCAT(:status,'%')")
+    public List<UserRole> searchUserNameAndRoleName(@Param("userName") String userName,@Param("roleName") String roleName,@Param("status") String status);
+	
+	@Query("SELECT ur FROM UserRole ur JOIN User u on u.id = ur.userId JOIN Role r on r.id = ur.roleId where u.userName LIKE CONCAT(:userName,'%') and ur.status LIKE CONCAT(:status,'%')")
+    public List<UserRole> searchUserName(@Param("userName") String userName,@Param("status") String status);
+	
+	@Query("SELECT ur FROM UserRole ur JOIN User u on u.id = ur.userId JOIN Role r on r.id = ur.roleId where r.roleName LIKE CONCAT(:roleName,'%') and ur.status LIKE CONCAT(:status,'%')")
+    public List<UserRole> searchRoleName(@Param("roleName") String roleName,@Param("status") String status);
 	
 	@Query("SELECT ur FROM UserRole ur where ur.roleId =:roleId")
     public void checkUserUseRole(@Param("roleId") String roleId);

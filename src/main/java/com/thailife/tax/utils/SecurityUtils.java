@@ -25,15 +25,28 @@ public class SecurityUtils {
 	
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	protected static String userName;
+	
 	public static void setSecurityInfo(SecuityUserObj o)throws Exception{
 		HttpSession session = getSession(true);
 		
 		o.setSessionId(session.getId());
 		session.setAttribute(ApplicationConstant.SECURITY_TOKEN,o.getToken());
-		session.setAttribute(ApplicationConstant.SECURITY_ONFO+o.getToken(),o);
+		session.setAttribute(ApplicationConstant.SECURITY_INFO,o);
 		//
 //		printAllSession(session,"setSecurityInfo");
 	}
+	
+	public static void setUserName(String o)throws Exception{
+		userName = o;
+	}
+	
+	public static String getUserName()throws Exception{
+					
+			return userName;
+	}
+	
+	
 //	
 	public static SecuityUserObj getSecurityInfo()throws Exception{
 		HttpSession session = getSession(false);
@@ -43,7 +56,7 @@ public class SecurityUtils {
 		if(session != null && session.getAttribute(ApplicationConstant.SECURITY_TOKEN) != null){
 			String token = (String)session.getAttribute(ApplicationConstant.SECURITY_TOKEN);
 					
-			return (SecuityUserObj)session.getAttribute(ApplicationConstant.SECURITY_ONFO+token);
+			return (SecuityUserObj)session.getAttribute(ApplicationConstant.SECURITY_INFO+token);
 		}else{
 			return null;
 		}
@@ -58,7 +71,7 @@ public class SecurityUtils {
 		
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		
-		attr.getRequest().getSession(false).removeAttribute(ApplicationConstant.SECURITY_ONFO+attr.getRequest().getSession(false).getAttribute(ApplicationConstant.SECURITY_TOKEN));
+		attr.getRequest().getSession(false).removeAttribute(ApplicationConstant.SECURITY_INFO+attr.getRequest().getSession(false).getAttribute(ApplicationConstant.SECURITY_TOKEN));
 		attr.getRequest().getSession(false).removeAttribute(ApplicationConstant.SECURITY_AUTHERIZE);
 		attr.getRequest().getSession(false).removeAttribute(ApplicationConstant.SECURITY_TOKEN);
 //		attr.getRequest().getSession(false).invalidate();
@@ -71,13 +84,13 @@ public class SecurityUtils {
 //		attr.getRequest().getSession(false).removeAttribute(ApplicationConstant.SECURITY_ONFO+attr.getRequest().getSession(false).getAttribute(ApplicationConstant.SECURITY_TOKEN));
 		attr.getRequest().getSession(false).invalidate();
 	}
-//	public static String getClientIpAddress() throws Exception{
-//		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-//			
-//		return attr.getRequest().getRemoteAddr();
-//
-//	
-//	}
+	public static String getClientIpAddress() throws Exception{
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+			
+		return attr.getRequest().getRemoteAddr();
+
+	
+	}
 	public static void setAutherized(HashMap<String,String> map)throws Exception{
 		HttpSession session = getSession(false);
 		

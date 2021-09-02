@@ -3,7 +3,7 @@ spring.profiles.active: local
 spring:
   profiles: local
   application:
-    name: demo-thailife
+    name: wsTaxSpring
  # Database
   datasource:
     driver-class-name: org.postgresql.Driver
@@ -26,28 +26,27 @@ spring:
         persistence:
           query:
             timeout: 63000
-      
-# Server configuration
-server:
-  servlet:
-     context-path: /demo
-  port: 8080
 # Logger configuration
 logging:
   path: E:\Work\thai life\logs
   file: ${logging.path}/log-${spring.application.name}.log
+# Server configuration
+server:
+  servlet:
+    context-path: /tax
+  port: 8080
   
 ---
 spring:
   profiles: dev
   application:
-    name: demo-thailife
+    name: wsTax
  # Database
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://10.102.60.68:5432/postgres
-    username: postgres
-    password: 159753
+    url: jdbc:postgresql://dev-cbizdb.thailife.com:5432/corebiz
+    username: corebiz.app
+    password: C2a7MzO3Mz@jZR
   # JPA properties
   jpa:
     hibernate:
@@ -59,20 +58,17 @@ spring:
       hibernate:
         allow_update_outside_transaction: false
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: test
+        default_schema: license_exam 
       javax:
         persistence:
           query:
             timeout: 63000
-      
 # Server configuration
 server:
   servlet:
-    context-path: /demo
-  port: 8080
-# Logger configuration
+    context-path: /tax
+  port: 8443
 logging:
-  path: E:\Work\thai life\logs
+  path: /opt/apache-tomcat-8.5.66/webapps/logsApp/
   file: ${logging.path}/log-${spring.application.name}.log
-  
 

@@ -90,10 +90,24 @@ public class UserRoleController {
 	
 	@PostMapping(value = "/deleteUserRole", produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> deleteUserRole(@RequestBody UserRoleObjC userRoleObjC) {
-		logger.error("deleteUserRole find by id Start .....");
+		logger.info("deleteUserRole find by id Start .....");
 		String result = "Success";
 		try {
 			result = userRoleService.deleteUserRole(userRoleObjC);
+			
+		} catch (Exception e) {
+			result = "fail";
+			logger.error("deleteUserRole find by id Error ...",e);
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
+	@PostMapping(value = "/deleteUserAllRole", produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> deleteUserAllRole(@RequestBody UserRoleObjC userRoleObjC) {
+		logger.info("deleteUserRole find by id Start .....");
+		String result = "Success";
+		try {
+			result = userRoleService.deleteUserAllRole(userRoleObjC);
 			
 		} catch (Exception e) {
 			result = "fail";

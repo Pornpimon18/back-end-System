@@ -21,6 +21,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +37,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @RestController
-@CrossOrigin(origins = "/**", allowedHeaders = "/**")
 @RequestMapping("/")
 public class RunController {
 
@@ -48,8 +52,29 @@ public class RunController {
 	
 	@Autowired
 	private LoginService loginService;
+	
+	private final HttpServletRequest req;
+
+	@Autowired
+	public RunController(HttpServletRequest req) {
+		this.req = req;
+	}
 
 	protected Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> helpChecks() {
+		String result = "";
+		GroupMenuObjC groupMenuObjC = null;
+		logger.error("callCheckEtlApi Start .....");
+		try {
+			result = "call Back End Success";
+//			groupMenuObjC = menuManageService.listMenu();
+		} catch (Exception e) {
+			result = "Error";
+		}
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
 	
 	@GetMapping(value = "/helpCheck", produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> helpCheck() {

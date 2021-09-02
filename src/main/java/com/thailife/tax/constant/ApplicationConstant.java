@@ -18,7 +18,7 @@ public class ApplicationConstant {
 	public static final String EDIT = "edit";
 	public static final String DELETE = "delete";
 	
-	public static final String SECURITY_ONFO = "SecInfo-";
+	public static final String SECURITY_INFO = "SecInfo-";
 	public static final String SECURITY_TOKEN = "Token";
 	public static final String SECURITY_AUTHERIZE = "Autherize";
 	
