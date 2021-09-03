@@ -72,7 +72,7 @@ public class TaxIncomeCodeService extends ServiceBase {
 			if (!result.equals(ApplicationConstant.DUPLICATE)) {
 				taxIncomeCodeObj.setId(IdGenerator.getId());
 				TaxIncomeCode taxIncomeCodeEntity = modelMapper.map(taxIncomeCodeObj, TaxIncomeCode.class);
-				taxIncomeCodeEntity.setCreateUser("User01");
+				taxIncomeCodeEntity.setCreateUser(SecurityUtils.getUserName());
 				taxIncomeCodeEntity.setCreateTime(new Date());
 				taxIncomeCodeEntity.setStatus(ApplicationConstant.STATUS_ACTIVE);
 				taxIncomeCodeEntity = taxIncomeCodeCustomRepository.saveEntity(taxIncomeCodeEntity);
@@ -93,7 +93,7 @@ public class TaxIncomeCodeService extends ServiceBase {
 			if (!result.equals(ApplicationConstant.DUPLICATE)) {
 				ModelMapper modelMapper = new ModelMapper();
 				TaxIncomeCode taxIncomeCodeEntity = modelMapper.map(taxIncomeCodeObj, TaxIncomeCode.class);
-				taxIncomeCodeEntity.setUpdateUser("test01");
+				taxIncomeCodeEntity.setUpdateUser(SecurityUtils.getUserName());
 				taxIncomeCodeEntity.setUpdateTime(new Date());
 				taxIncomeCodeEntity = taxIncomeCodeCustomRepository.updateEntity(taxIncomeCodeEntity);
 
@@ -110,7 +110,9 @@ public class TaxIncomeCodeService extends ServiceBase {
 			ModelMapper modelMapper = new ModelMapper();
 			TaxIncomeCode taxIncomeCodeEntity = new TaxIncomeCode();
 			taxIncomeCodeEntity = taxIncomeCodeRepository.searchDataById(taxIncomeCodeObj.getId());
-			taxIncomeCodeObj = modelMapper.map(taxIncomeCodeEntity, TaxIncomeCodeObj.class);
+			if(taxIncomeCodeEntity.getId() !=null){
+				taxIncomeCodeObj = modelMapper.map(taxIncomeCodeEntity, TaxIncomeCodeObj.class);
+			}
 		} catch (Exception e) {
 			logger.error("findById TaxIncomeCode Error", e);
 		}

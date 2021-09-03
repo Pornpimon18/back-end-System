@@ -11,7 +11,7 @@ import com.thailife.tax.base.DataObjBaseTax;
 
 public class TaxIncomeCodeObj extends DataObjBaseTax {
 	
-    private String id;
+    private String code;
     private String name;
     private String nameTh;
     private String nameEn;
@@ -23,11 +23,12 @@ public class TaxIncomeCodeObj extends DataObjBaseTax {
     private String status;
     private Date effectiveDate;
     
-	public String getId() {
-		return id;
+
+	public String getCode() {
+		return code;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setCode(String code) {
+		this.code = code;
 	}
 	public String getName() {
 		return name;
