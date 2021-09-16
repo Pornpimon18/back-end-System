@@ -2,32 +2,24 @@ package com.thailife.tax.object;
 
 import java.util.Date;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import com.thailife.tax.base.DataObjBaseTax;
-import com.thailife.tax.utils.Status;
 
-public class TaxIncomeCodeObj extends DataObjBaseTax {
+public class TaxCatalogObj extends DataObjBaseTax{
 	
-    private String incomeCatalogId;
+    private String taxCatalogId;
     private String name;
     private String nameTh;
     private String nameEn;
     private String description;
     private String descriptionTh;
     private String descriptionEn;
-    private String taxCatalog;
-    private String taxRate;
     private Date effectiveDate;
-	
-	public String getIncomeCatalogId() {
-		return incomeCatalogId;
+    
+	public String getTaxCatalogId() {
+		return taxCatalogId;
 	}
-	public void setIncomeCatalogId(String incomeCatalogId) {
-		this.incomeCatalogId = incomeCatalogId;
+	public void setTaxCatalogId(String taxCatalogId) {
+		this.taxCatalogId = taxCatalogId;
 	}
 	public String getName() {
 		return name;
@@ -65,18 +57,6 @@ public class TaxIncomeCodeObj extends DataObjBaseTax {
 	public void setDescriptionEn(String descriptionEn) {
 		this.descriptionEn = descriptionEn;
 	}
-	public String getTaxCatalog() {
-		return taxCatalog;
-	}
-	public void setTaxCatalog(String taxCatalog) {
-		this.taxCatalog = taxCatalog;
-	}
-	public String getTaxRate() {
-		return taxRate;
-	}
-	public void setTaxRate(String taxRate) {
-		this.taxRate = taxRate;
-	}
 	public Date getEffectiveDate() {
 		return effectiveDate;
 	}
@@ -84,6 +64,6 @@ public class TaxIncomeCodeObj extends DataObjBaseTax {
 		this.effectiveDate = effectiveDate;
 	}
     
-	
     
+
 }

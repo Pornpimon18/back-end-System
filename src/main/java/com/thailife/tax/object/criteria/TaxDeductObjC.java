@@ -10,22 +10,21 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.thailife.tax.base.DataObjBaseTax;
-import com.thailife.tax.object.TaxIncomeCodeObj;
+import com.thailife.tax.object.TaxDeductObj;
 
-public class TaxIncomeCodeObjC extends DataObjBaseTax {
+public class TaxDeductObjC extends DataObjBaseTax {
 	
-    private String incomeCatalogId;
+    private String id;
     private String name;
     private String nameTh;
     private String nameEn;
-    private List<TaxIncomeCodeObj> listTaxIncomeObj= new ArrayList<TaxIncomeCodeObj>();
+    private List<TaxDeductObj> listTaxDeductObj= new ArrayList<TaxDeductObj>();
     
-	
-	public String getIncomeCatalogId() {
-		return incomeCatalogId;
+	public String getId() {
+		return id;
 	}
-	public void setIncomeCatalogId(String incomeCatalogId) {
-		this.incomeCatalogId = incomeCatalogId;
+	public void setId(String id) {
+		this.id = id;
 	}
 	public String getName() {
 		return name;
@@ -45,11 +44,12 @@ public class TaxIncomeCodeObjC extends DataObjBaseTax {
 	public void setNameEn(String nameEn) {
 		this.nameEn = nameEn;
 	}
-	public List<TaxIncomeCodeObj> getListTaxIncomeObj() {
-		return listTaxIncomeObj;
+	public List<TaxDeductObj> getListTaxDeductObj() {
+		return listTaxDeductObj;
 	}
-	public void setListTaxIncomeObj(List<TaxIncomeCodeObj> listTaxIncomeObj) {
-		this.listTaxIncomeObj = listTaxIncomeObj;
+	public void setListTaxDeductObj(List<TaxDeductObj> listTaxDeductObj) {
+		this.listTaxDeductObj = listTaxDeductObj;
 	}
     
+	
 }

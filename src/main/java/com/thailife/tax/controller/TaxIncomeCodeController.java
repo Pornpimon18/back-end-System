@@ -72,11 +72,11 @@ public class TaxIncomeCodeController {
 	}
 	
 	@RequestMapping(value = "/findById", produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<TaxIncomeCodeObj> findById(@RequestParam("id") String id) {
+	public ResponseEntity<TaxIncomeCodeObj> findById(@RequestParam("incomeCatalogId") String incomeCatalogId) {
 		logger.info("findById find by id TaxIncomeCode Start .....");
 		TaxIncomeCodeObj taxIncomeCodeObj = new TaxIncomeCodeObj();
 		try {
-			taxIncomeCodeObj.setId(id);
+			taxIncomeCodeObj.setIncomeCatalogId(incomeCatalogId);
 			taxIncomeCodeObj = taxIncomeCodeService.findById(taxIncomeCodeObj);
 			
 		} catch (Exception e) {

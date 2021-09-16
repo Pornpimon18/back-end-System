@@ -33,6 +33,7 @@ import com.thailife.tax.repository.custom.RoleMenuCustomRepository;
 import com.thailife.tax.repository.custom.TaxIncomeCodeCustomRepository;
 import com.thailife.tax.utils.IdGenerator;
 import com.thailife.tax.utils.SecurityUtils;
+import com.thailife.tax.utils.Status;
 
 @Service
 public class TaxIncomeCodeService extends ServiceBase {
@@ -70,11 +71,11 @@ public class TaxIncomeCodeService extends ServiceBase {
 			ModelMapper modelMapper = new ModelMapper();
 			result = checkDup(taxIncomeCodeObj,ApplicationConstant.ADD);
 			if (!result.equals(ApplicationConstant.DUPLICATE)) {
-				taxIncomeCodeObj.setId(IdGenerator.getId());
+				taxIncomeCodeObj.setIncomeCatalogId(IdGenerator.getId());
 				TaxIncomeCode taxIncomeCodeEntity = modelMapper.map(taxIncomeCodeObj, TaxIncomeCode.class);
-				taxIncomeCodeEntity.setCreateUser(SecurityUtils.getUserName());
-				taxIncomeCodeEntity.setCreateTime(new Date());
-				taxIncomeCodeEntity.setStatus(ApplicationConstant.STATUS_ACTIVE);
+				taxIncomeCodeEntity.setUpdateUser(SecurityUtils.getUserName());
+				taxIncomeCodeEntity.setUpdateTime(new Date());
+				taxIncomeCodeEntity.setStatus(Status.active);
 				taxIncomeCodeEntity = taxIncomeCodeCustomRepository.saveEntity(taxIncomeCodeEntity);
 			}
 			logger.info("End add TaxIncomeCode .........");
@@ -95,6 +96,7 @@ public class TaxIncomeCodeService extends ServiceBase {
 				TaxIncomeCode taxIncomeCodeEntity = modelMapper.map(taxIncomeCodeObj, TaxIncomeCode.class);
 				taxIncomeCodeEntity.setUpdateUser(SecurityUtils.getUserName());
 				taxIncomeCodeEntity.setUpdateTime(new Date());
+				taxIncomeCodeEntity.setStatus(Status.active);
 				taxIncomeCodeEntity = taxIncomeCodeCustomRepository.updateEntity(taxIncomeCodeEntity);
 
 			}
@@ -109,8 +111,8 @@ public class TaxIncomeCodeService extends ServiceBase {
 		try {
 			ModelMapper modelMapper = new ModelMapper();
 			TaxIncomeCode taxIncomeCodeEntity = new TaxIncomeCode();
-			taxIncomeCodeEntity = taxIncomeCodeRepository.searchDataById(taxIncomeCodeObj.getId());
-			if(taxIncomeCodeEntity.getId() !=null){
+			taxIncomeCodeEntity = taxIncomeCodeRepository.searchDataById(taxIncomeCodeObj.getIncomeCatalogId());
+			if(taxIncomeCodeEntity.getIncomeCatalogId() !=null){
 				taxIncomeCodeObj = modelMapper.map(taxIncomeCodeEntity, TaxIncomeCodeObj.class);
 			}
 		} catch (Exception e) {
@@ -126,13 +128,8 @@ public class TaxIncomeCodeService extends ServiceBase {
 		List<TaxIncomeCodeObj> listTaxIncomeCodeObj = new ArrayList<>();
 		String status = "";
 		try {
-			if (taxIncomeCodeObjC.getStatus() != null) {
-				status = taxIncomeCodeObjC.getStatus();
-				if (("").equals(status)) {
-					status = "ST";
-				}
-			}
-			listTaxIncomeCodeEntity = taxIncomeCodeRepository.searchDataByNameAndStatus(taxIncomeCodeObjC.getName(), status);
+			listTaxIncomeCodeEntity = taxIncomeCodeRepository.searchDataByNameAndStatus(taxIncomeCodeObjC.getName(), taxIncomeCodeObjC.getStatus());
+			
 			for (int i = 0; i < listTaxIncomeCodeEntity.size(); i++) {
 				TaxIncomeCodeObj taxIncomeCodeObj = modelMapper.map(listTaxIncomeCodeEntity.get(i), TaxIncomeCodeObj.class);
 				listTaxIncomeCodeObj.add(taxIncomeCodeObj);
@@ -150,35 +147,11 @@ public class TaxIncomeCodeService extends ServiceBase {
 		String result = ApplicationConstant.SUCCESS;
 		try {
 			logger.info("Start delete TaxIncomeCode .........");
-			ModelMapper modelMapper = new ModelMapper();
-//			List<RoleMenu> listRoleMenuEntity = new ArrayList<RoleMenu>();
-//			List<Role> listRoleEntity = new ArrayList<Role>();
-
-//			for (int d = 0; d < taxIncomeCodeObjC.getListTaxIncomeObj().size(); d++) {
-//				taxIncomeCodeEntity = new TaxIncomeCode();
-//				listRoleEntity = taxIncomeCodeRepository.checkUserUseRole(taxIncomeCodeObjC.getListTaxIncomeObj().get(d).getId(),
-//						ApplicationConstant.STATUS_ACTIVE);
-//				if (listRoleEntity.size() > 0) {
-//					result = ApplicationConstant.FAIL;
-//				}
-//			}
-
-//			if (!result.equals(ApplicationConstant.FAIL)) {
-//				for (int h = 0; h < roleObjC.getListRoleObj().size(); h++) {
-//					role = new Role();
-//					listRoleEntity = roleRepository.checkUserUseRole(roleObjC.getListRoleObj().get(h).getId(),
-//							ApplicationConstant.STATUS_ACTIVE);
-//					if (listRoleEntity.size() == 0) {
-//						role = roleRepository.searchDataById(roleObjC.getListRoleObj().get(h).getId());
-//						listRoleMenuEntity = roleMenuService.searchDataByRoleId(role.getId());
-//						roleMenuRepositoryCustom.deleteEntityList(listRoleMenuEntity);
-//						role.setStatus(ApplicationConstant.STATUS_INACTIVE);
-//						roleRepositoryCustom.updateEntity(role);
-//						result = ApplicationConstant.SUCCESS;
-//					}
-//
-//				}
-//			}
+			for (int d = 0; d < taxIncomeCodeObjC.getListTaxIncomeObj().size(); d++) {
+				taxIncomeCodeEntity = taxIncomeCodeRepository.searchDataById(taxIncomeCodeObjC.getListTaxIncomeObj().get(d).getIncomeCatalogId());
+				taxIncomeCodeEntity.setStatus(Status.inactive);
+				taxIncomeCodeEntity = taxIncomeCodeCustomRepository.updateEntity(taxIncomeCodeEntity);
+			}
 
 			logger.info("End delete TaxIncomeCode .........");
 		} catch (Exception e) {
@@ -193,16 +166,14 @@ public class TaxIncomeCodeService extends ServiceBase {
 
 		try {
 			if(ApplicationConstant.ADD.equals(action)){
-				listTaxIncomeCodeEntity = taxIncomeCodeRepository.checkDupDataByNameAndStatus(taxIncomeCodeObj.getName(),
-						ApplicationConstant.STATUS_ACTIVE);
+				listTaxIncomeCodeEntity = taxIncomeCodeRepository.checkDupDataByNameAndStatus(taxIncomeCodeObj.getName());
 				if (listTaxIncomeCodeEntity.size() == 0) {
 					result = ApplicationConstant.SUCCESS;
 				}
 			}else if(ApplicationConstant.EDIT.equals(action)){
-				listTaxIncomeCodeEntity = taxIncomeCodeRepository.checkDupDataByNameAndStatus(taxIncomeCodeObj.getName(),
-						ApplicationConstant.STATUS_ACTIVE);
+				listTaxIncomeCodeEntity = taxIncomeCodeRepository.checkDupDataByNameAndStatus(taxIncomeCodeObj.getName());
 				if (listTaxIncomeCodeEntity.size() > 0) {
-					if(taxIncomeCodeObj.getId().equals(listTaxIncomeCodeEntity.get(0).getId())){
+					if(taxIncomeCodeObj.getIncomeCatalogId().equals(listTaxIncomeCodeEntity.get(0).getIncomeCatalogId())){
 						result = ApplicationConstant.SUCCESS;
 					}
 				}else{

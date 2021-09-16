@@ -3,25 +3,33 @@ package com.thailife.tax.base;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.thailife.tax.utils.Status;
+
 public class DataObjBaseTax implements Serializable{
 
-	private String id = "";
-	private String status = "";
-	private String createUser = "";
-	private Date createTime = null;
+	private Status status ;
 	private String updateUser = "";
 	private Date updateTime = null;
-	
-	public String getId() {
-		return id;
+	private String createUser;
+	private Date createTime;
+
+	public String getUpdateUser() {
+		return updateUser;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
 	}
-	public String getStatus() {
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public Status getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 	public String getCreateUser() {
@@ -36,18 +44,5 @@ public class DataObjBaseTax implements Serializable{
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	public String getUpdateUser() {
-		return updateUser;
-	}
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-
 	
 }

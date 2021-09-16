@@ -16,6 +16,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import com.thailife.tax.object.criteria.RoleObjC;
+import com.thailife.tax.utils.Status;
 
 import java.util.Date;
 import java.util.List;
@@ -27,20 +28,23 @@ import java.util.List;
 @Transactional
 public interface TaxIncomeCodeRepository extends JpaRepository<TaxIncomeCode, String>, JpaSpecificationExecutor<TaxIncomeCode> {
 
-	@Query("SELECT t FROM TaxIncomeCode t where t.status='ST001'")
+	@Query("SELECT t FROM TaxIncomeCode t where t.status='active'")
     public List<TaxIncomeCode> searchDataAll(); 
 	
-	@Query("SELECT t FROM TaxIncomeCode t where t.id=:id")
-    public TaxIncomeCode searchDataById(@Param("id") String id); 
+	@Query("SELECT t FROM TaxIncomeCode t where t.incomeCatalogId=:incomeCatalogId")
+    public TaxIncomeCode searchDataById(@Param("incomeCatalogId") String incomeCatalogId); 
 	
-	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%') and t.status='ST001'")
+	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%') and t.status='active'")
     public TaxIncomeCode searchDataByName(@Param("name") String name); 
 	
-	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%') and t.status LIKE CONCAT(:status,'%')")
-    public List<TaxIncomeCode> searchDataByNameAndStatus(@Param("name") String roleName,@Param("status") String status); 
+	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%') and t.status=:status")
+    public List<TaxIncomeCode> searchDataByNameAndStatus(@Param("name") String name,@Param("status") Status status); 
 	
-	@Query("SELECT t FROM TaxIncomeCode t where t.name=:name and t.status=:status")
-    public List<TaxIncomeCode> checkDupDataByNameAndStatus(@Param("name") String roleName,@Param("status") String status); 
+	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%')")
+    public List<TaxIncomeCode> searchDataByNameAndStatusAll(@Param("name") String name);
+	
+	@Query("SELECT t FROM TaxIncomeCode t where t.name=:name and t.status='active'")
+    public List<TaxIncomeCode> checkDupDataByNameAndStatus(@Param("name") String name); 
 	
 	
 }
