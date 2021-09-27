@@ -29,14 +29,14 @@ public interface TaxDeductGroupDetailRepository extends JpaRepository<TaxDeductG
 	@Query("SELECT t FROM TaxDeductGroupDetail t where t.taxDeductGroupDetailPK.year=:year and t.taxDeductGroupDetailPK.deductGroupId=:deductGroupId and t.taxDeductGroupDetailPK.effectiveDate=(SELECT MAX(r.taxDeductGroupDetailPK.effectiveDate) FROM TaxDeductGroupDetail r where r.taxDeductGroupDetailPK.year=:year)")
     public List<TaxDeductGroupDetail> searchDataByYearAndDeductGroupId(@Param("year") String year,@Param("deductGroupId") String deductGroupId);
 	
-	@Query("SELECT t FROM TaxDeductGroupDetail t where t.taxDeductGroupDetailPK.year=:year and CURRENT_DATE< t.taxDeductGroupDetailPK.effectiveDate")
-    public List<TaxDeductGroupDetail> searchDataMoreCurrentDate(@Param("year") String year); 
+	@Query("SELECT t FROM TaxDeductGroupDetail t where t.taxDeductGroupDetailPK.year=:year and CURRENT_DATE< t.taxDeductGroupDetailPK.effectiveDate and t.taxDeductGroupDetailPK.deductGroupId=:deductGroupId")
+    public List<TaxDeductGroupDetail> searchDataMoreCurrentDate(@Param("year") String year,@Param("deductGroupId") String deductGroupId); 
 	
-	@Query("SELECT t FROM TaxDeductGroupDetail t where t.taxDeductGroupDetailPK.year=:year and t.taxDeductGroupDetailPK.effectiveDate=:effectiveDate")
-    public List<TaxDeductGroupDetail> searchDataByYearAndEffectiveDate(@Param("year") String year,@Param("effectiveDate") Date effectiveDate); 
+	@Query("SELECT t FROM TaxDeductGroupDetail t where t.taxDeductGroupDetailPK.year=:year and t.taxDeductGroupDetailPK.effectiveDate=:effectiveDate and t.taxDeductGroupDetailPK.deductGroupId=:deductGroupId")
+    public List<TaxDeductGroupDetail> searchDataByYearAndEffectiveDate(@Param("year") String year,@Param("effectiveDate") Date effectiveDate,@Param("deductGroupId") String deductGroupId); 
 	
-	@Query("SELECT t FROM TaxDeductGroupDetail t where t.taxDeductGroupDetailPK.year=:year and t.taxDeductGroupDetailPK.taxDeductId=:taxDeductId and  t.taxDeductGroupDetailPK.effectiveDate=:effectiveDate")
-    public List<TaxDeductGroupDetail> checkDupData(@Param("year") String year,@Param("taxDeductId") String taxDeductId,@Param("effectiveDate") Date effectiveDate); 
+	@Query("SELECT t FROM TaxDeductGroupDetail t where t.taxDeductGroupDetailPK.year=:year and t.taxDeductGroupDetailPK.taxDeductId=:taxDeductId and  t.taxDeductGroupDetailPK.effectiveDate=:effectiveDate and t.taxDeductGroupDetailPK.deductGroupId=:deductGroupId")
+    public List<TaxDeductGroupDetail> checkDupData(@Param("year") String year,@Param("taxDeductId") String taxDeductId,@Param("effectiveDate") Date effectiveDate,@Param("deductGroupId") String deductGroupId); 
 	
 	
 }

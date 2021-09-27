@@ -73,11 +73,11 @@ public class TaxDeductGroupDetailService extends ServiceBase {
 			List<TaxDeductGroupDetail> listTaxDeductGroupDetailEntity = new ArrayList<TaxDeductGroupDetail>();
 			
 			if(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().size() > 0){
-				listTaxDeductGroupDetailEntity = taxDeductGroupDetailRepository.searchDataByYearAndEffectiveDate(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(0).getYear(),taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(0).getEffectiveDate());
+				listTaxDeductGroupDetailEntity = taxDeductGroupDetailRepository.searchDataByYearAndEffectiveDate(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(0).getYear(),taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(0).getEffectiveDate(),taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(0).getDeductGroupId());
 				if(listTaxDeductGroupDetailEntity.size() > 0){
 					taxDeductGroupDetailCustomRepository.deleteEntityList(listTaxDeductGroupDetailEntity);
 				}
-				listTaxDeductGroupDetailEntity = taxDeductGroupDetailRepository.searchDataMoreCurrentDate(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(0).getYear());
+				listTaxDeductGroupDetailEntity = taxDeductGroupDetailRepository.searchDataMoreCurrentDate(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(0).getYear(),taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(0).getDeductGroupId());
 				if(listTaxDeductGroupDetailEntity.size() > 0){
 					taxDeductGroupDetailCustomRepository.deleteEntityList(listTaxDeductGroupDetailEntity);
 				}
@@ -87,6 +87,8 @@ public class TaxDeductGroupDetailService extends ServiceBase {
 						taxDeductGroupDetailEntity.setTaxDeductGroupDetailPK(new TaxDeductGroupDetailPK());
 						taxDeductGroupDetailEntity.getTaxDeductGroupDetailPK().setYear(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(y).getYear());
 						taxDeductGroupDetailEntity.getTaxDeductGroupDetailPK().setTaxDeductId(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(y).getTaxDeductId());
+						taxDeductGroupDetailEntity.getTaxDeductGroupDetailPK().setDeductGroupId(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(y).getDeductGroupId());
+						taxDeductGroupDetailEntity.getTaxDeductGroupDetailPK().setNo(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(y).getNo());
 						taxDeductGroupDetailEntity.getTaxDeductGroupDetailPK().setEffectiveDate(taxDeductGroupDetailObjC.getListTaxDeductGroupDetailObj().get(y).getEffectiveDate());
 						taxDeductGroupDetailEntity.setCreateTime(new Date());
 						taxDeductGroupDetailEntity.setCreateUser(SecurityUtils.getUserName());
@@ -171,7 +173,7 @@ public class TaxDeductGroupDetailService extends ServiceBase {
 		List<TaxDeductGroupDetail> listTaxDeductGroupDetailEntity = new ArrayList<TaxDeductGroupDetail>();
 		try {
 			
-			listTaxDeductGroupDetailEntity = taxDeductGroupDetailRepository.searchDataMoreCurrentDate(taxDeductGroupDetailObjC.getYear());
+			listTaxDeductGroupDetailEntity = taxDeductGroupDetailRepository.searchDataMoreCurrentDate(taxDeductGroupDetailObjC.getYear(),taxDeductGroupDetailObjC.getDeductGroupId());
 			if(listTaxDeductGroupDetailEntity.size() == 0){
 				result = ApplicationConstant.SUCCESS;
 			}
@@ -189,13 +191,13 @@ public class TaxDeductGroupDetailService extends ServiceBase {
 		try {
 			if (ApplicationConstant.ADD.equals(action)) {
 				listTaxDeductGroupDetailEntity = taxDeductGroupDetailRepository.checkDupData(taxDeductGroupDetailObj.getYear(),
-						taxDeductGroupDetailObj.getTaxDeductId(), taxDeductGroupDetailObj.getEffectiveDate());
+						taxDeductGroupDetailObj.getTaxDeductId(), taxDeductGroupDetailObj.getEffectiveDate(),taxDeductGroupDetailObj.getDeductGroupId());
 				if (listTaxDeductGroupDetailEntity.size() == 0) {
 					result = ApplicationConstant.SUCCESS;
 				}
 			} else if (ApplicationConstant.EDIT.equals(action)) {
 				listTaxDeductGroupDetailEntity = taxDeductGroupDetailRepository.checkDupData(taxDeductGroupDetailObj.getYear(),
-						taxDeductGroupDetailObj.getTaxDeductId(), taxDeductGroupDetailObj.getEffectiveDate());
+						taxDeductGroupDetailObj.getTaxDeductId(), taxDeductGroupDetailObj.getEffectiveDate(),taxDeductGroupDetailObj.getDeductGroupId());
 				if (listTaxDeductGroupDetailEntity.size() > 0) {
 					if (taxDeductGroupDetailObj.getYear()
 							.equals(listTaxDeductGroupDetailEntity.get(0).getTaxDeductGroupDetailPK().getYear())

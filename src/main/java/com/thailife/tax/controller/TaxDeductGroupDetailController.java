@@ -72,13 +72,11 @@ public class TaxDeductGroupDetailController {
 		return new ResponseEntity<>(taxDeductGroupDetailObjC, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/findDataMoreCurrentDate", produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> findDataMoreCurrentDate(@RequestParam("year") String year) {
+	@PostMapping(value = "/findDataMoreCurrentDate", produces = {MediaType.APPLICATION_JSON_VALUE})
+	public ResponseEntity<String> findDataMoreCurrentDate(@RequestBody TaxDeductGroupDetailObjC taxDeductGroupDetailObjC) {
 		logger.info("findById find by id TaxDeductGroupDetail Start .....");
 		String result = "fail";
-		TaxDeductGroupDetailObjC taxDeductGroupDetailObjC = new TaxDeductGroupDetailObjC();
 		try {
-			taxDeductGroupDetailObjC.setYear(year);
 			result = taxDeductGroupDetailService.findDataMoreCurrentDate(taxDeductGroupDetailObjC);
 			
 		} catch (Exception e) {
