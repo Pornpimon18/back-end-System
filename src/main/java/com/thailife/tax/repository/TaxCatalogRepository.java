@@ -39,6 +39,9 @@ public interface TaxCatalogRepository extends JpaRepository<TaxCatalog, String>,
 	@Query("SELECT t FROM TaxCatalog t where t.name LIKE CONCAT(:name,'%') and t.status=:status")
     public List<TaxCatalog> searchDataByNameAndStatus(@Param("name") String name,@Param("status") Status status); 
 	
+	@Query("SELECT t FROM TaxCatalog t where t.name LIKE CONCAT(:name,'%') and t.status IN ('active','inactive')")
+    public List<TaxCatalog> searchDataByNameAndStatusAll(@Param("name") String name); 
+	
 	@Query("SELECT t FROM TaxCatalog t where t.name=:name and t.status='active'")
     public List<TaxCatalog> checkDupDataByNameAndStatus(@Param("name") String name); 
 	

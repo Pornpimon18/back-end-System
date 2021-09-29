@@ -126,8 +126,14 @@ public class TaxDeductService extends ServiceBase {
 		List<TaxDeductObj> listTaxDeductObj = new ArrayList<>();
 		String status = "";
 		try {
+			if(("all").equals(taxDeductObjC.getStatus().name())){
+
+				listTaxDeductEntity = taxDeductRepository.searchDataByNameAndStatusAll(taxDeductObjC.getName());
+			}else{
+
+				listTaxDeductEntity = taxDeductRepository.searchDataByNameAndStatus(taxDeductObjC.getName(), taxDeductObjC.getStatus());
+			}
 			
-			listTaxDeductEntity = taxDeductRepository.searchDataByNameAndStatus(taxDeductObjC.getName(), taxDeductObjC.getStatus());
 			for (int i = 0; i < listTaxDeductEntity.size(); i++) {
 				TaxDeductObj taxDeductObj = modelMapper.map(listTaxDeductEntity.get(i), TaxDeductObj.class);
 				listTaxDeductObj.add(taxDeductObj);

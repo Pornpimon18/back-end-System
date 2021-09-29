@@ -126,8 +126,13 @@ public class TaxDeductGroupService extends ServiceBase {
 		List<TaxDeductGroupObj> listTaxDeductGroupObj = new ArrayList<>();
 		String status = "";
 		try {
-			
-			listTaxDeductGroupEntity = taxDeductRepository.searchDataByNameAndStatus(taxDeductObjC.getName(), taxDeductObjC.getStatus());
+			if(("all").equals(taxDeductObjC.getStatus().name())){
+
+				listTaxDeductGroupEntity = taxDeductRepository.searchDataByNameAndStatusAll(taxDeductObjC.getName());
+			}else{
+
+				listTaxDeductGroupEntity = taxDeductRepository.searchDataByNameAndStatus(taxDeductObjC.getName(), taxDeductObjC.getStatus());
+			}
 			for (int i = 0; i < listTaxDeductGroupEntity.size(); i++) {
 				TaxDeductGroupObj taxDeductObj = modelMapper.map(listTaxDeductGroupEntity.get(i), TaxDeductGroupObj.class);
 				listTaxDeductGroupObj.add(taxDeductObj);

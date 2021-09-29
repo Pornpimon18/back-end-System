@@ -116,8 +116,12 @@ public class TaxSystemInfoService extends ServiceBase {
 		List<TaxSystemInfoObj> listTaxSystemInfoObj = new ArrayList<>();
 		String status = "";
 		try {
+			if(("all").equals(taxSystemInfoObjC.getStatus().name())){
+				listTaxSystemInfoEntity = taxSystemInfoRepository.searchDataByNameAndStatusAll(taxSystemInfoObjC.getName());
+			}else{
+				listTaxSystemInfoEntity = taxSystemInfoRepository.searchDataByNameAndStatus(taxSystemInfoObjC.getName(), taxSystemInfoObjC.getStatus());
+			}
 			
-			listTaxSystemInfoEntity = taxSystemInfoRepository.searchDataByNameAndStatus(taxSystemInfoObjC.getName(), taxSystemInfoObjC.getStatus());
 			for (int i = 0; i < listTaxSystemInfoEntity.size(); i++) {
 				TaxSystemInfoObj taxSystemInfoObj = modelMapper.map(listTaxSystemInfoEntity.get(i), TaxSystemInfoObj.class);
 				listTaxSystemInfoObj.add(taxSystemInfoObj);

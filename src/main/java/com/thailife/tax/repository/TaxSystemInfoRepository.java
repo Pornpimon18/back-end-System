@@ -5,6 +5,7 @@
  */
 package com.thailife.tax.repository;
 
+import com.thailife.tax.entity.TaxRate;
 import com.thailife.tax.entity.TaxSystemInfo;
 import com.thailife.tax.utils.Status;
 
@@ -38,6 +39,9 @@ public interface TaxSystemInfoRepository extends JpaRepository<TaxSystemInfo, St
 	
 	@Query("SELECT t FROM TaxSystemInfo t where t.name LIKE CONCAT(:name,'%') and t.status=:status")
     public List<TaxSystemInfo> searchDataByNameAndStatus(@Param("name") String name,@Param("status") Status status); 
+	
+	@Query("SELECT t FROM TaxSystemInfo t where t.name LIKE CONCAT(:name,'%') and t.status IN ('active','inactive')")
+    public List<TaxSystemInfo> searchDataByNameAndStatusAll(@Param("name") String name);
 	
 	@Query("SELECT t FROM TaxSystemInfo t where t.name=:name and t.status='active'")
     public List<TaxSystemInfo> checkDupDataByNameAndStatus(@Param("name") String name); 

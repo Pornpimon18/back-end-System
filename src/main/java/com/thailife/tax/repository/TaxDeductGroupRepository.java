@@ -6,6 +6,7 @@
 package com.thailife.tax.repository;
 
 import com.thailife.tax.entity.TaxDeductGroup;
+import com.thailife.tax.entity.TaxIncomeCode;
 import com.thailife.tax.utils.Status;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,6 +39,9 @@ public interface TaxDeductGroupRepository extends JpaRepository<TaxDeductGroup, 
 	
 	@Query("SELECT t FROM TaxDeductGroup t where t.name LIKE CONCAT(:name,'%') and t.status=:status")
     public List<TaxDeductGroup> searchDataByNameAndStatus(@Param("name") String name,@Param("status") Status status); 
+	
+	@Query("SELECT t FROM TaxDeductGroup t where t.name LIKE CONCAT(:name,'%') and t.status IN ('active','inactive')")
+    public List<TaxDeductGroup> searchDataByNameAndStatusAll(@Param("name") String name);
 	
 	@Query("SELECT t FROM TaxDeductGroup t where t.name=:name and t.status='active'")
     public List<TaxDeductGroup> checkDupDataByNameAndStatus(@Param("name") String name); 

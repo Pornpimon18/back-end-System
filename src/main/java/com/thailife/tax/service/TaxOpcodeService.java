@@ -116,8 +116,14 @@ public class TaxOpcodeService extends ServiceBase {
 		List<TaxOpcodeObj> listTaxOpcodeObj = new ArrayList<>();
 		String status = "";
 		try {
+			if(("all").equals(taxOpcodeObjC.getStatus().name())){
+
+				listTaxOpcodeEntity = taxOpcodeRepository.searchDataByNameAndStatusAll(taxOpcodeObjC.getName());
+			}else{
+
+				listTaxOpcodeEntity = taxOpcodeRepository.searchDataByNameAndStatus(taxOpcodeObjC.getName(), taxOpcodeObjC.getStatus());
+			}
 			
-			listTaxOpcodeEntity = taxOpcodeRepository.searchDataByNameAndStatus(taxOpcodeObjC.getName(), taxOpcodeObjC.getStatus());
 			for (int i = 0; i < listTaxOpcodeEntity.size(); i++) {
 				TaxOpcodeObj taxOpcodeObj = modelMapper.map(listTaxOpcodeEntity.get(i), TaxOpcodeObj.class);
 				listTaxOpcodeObj.add(taxOpcodeObj);

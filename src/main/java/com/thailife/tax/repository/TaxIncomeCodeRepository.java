@@ -5,6 +5,7 @@
  */
 package com.thailife.tax.repository;
 
+import com.thailife.tax.entity.TaxCatalog;
 import com.thailife.tax.entity.TaxIncomeCode;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,8 +41,11 @@ public interface TaxIncomeCodeRepository extends JpaRepository<TaxIncomeCode, St
 	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%') and t.status=:status")
     public List<TaxIncomeCode> searchDataByNameAndStatus(@Param("name") String name,@Param("status") Status status); 
 	
-	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%')")
-    public List<TaxIncomeCode> searchDataByNameAndStatusAll(@Param("name") String name);
+	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%') and t.status IN ('active','inactive')")
+    public List<TaxIncomeCode> searchDataByNameAndStatusAll(@Param("name") String name); 
+	
+//	@Query("SELECT t FROM TaxIncomeCode t where t.name LIKE CONCAT(:name,'%')")
+//    public List<TaxIncomeCode> searchDataByNameAndStatusAll(@Param("name") String name);
 	
 	@Query("SELECT t FROM TaxIncomeCode t where t.name=:name and t.status='active'")
     public List<TaxIncomeCode> checkDupDataByNameAndStatus(@Param("name") String name); 

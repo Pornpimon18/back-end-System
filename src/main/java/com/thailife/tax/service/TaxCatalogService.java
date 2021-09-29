@@ -117,8 +117,11 @@ public class TaxCatalogService extends ServiceBase {
 		List<TaxCatalogObj> listTaxCatalogObj = new ArrayList<>();
 		String status = "";
 		try {
-			
-			listTaxCatalogEntity = taxCatalogRepository.searchDataByNameAndStatus(taxCatalogObjC.getName(), taxCatalogObjC.getStatus());
+			if(("all").equals(taxCatalogObjC.getStatus())){
+				listTaxCatalogEntity = taxCatalogRepository.searchDataByNameAndStatusAll(taxCatalogObjC.getName());
+			}else{
+				listTaxCatalogEntity = taxCatalogRepository.searchDataByNameAndStatus(taxCatalogObjC.getName(), taxCatalogObjC.getStatus());
+			}
 			for (int i = 0; i < listTaxCatalogEntity.size(); i++) {
 				TaxCatalogObj taxCatalogObj = modelMapper.map(listTaxCatalogEntity.get(i), TaxCatalogObj.class);
 				listTaxCatalogObj.add(taxCatalogObj);

@@ -5,6 +5,7 @@
  */
 package com.thailife.tax.repository;
 
+import com.thailife.tax.entity.TaxDeduct;
 import com.thailife.tax.entity.TaxOpcode;
 import com.thailife.tax.utils.Status;
 
@@ -38,6 +39,9 @@ public interface TaxOpcodeRepository extends JpaRepository<TaxOpcode, String>, J
 	
 	@Query("SELECT t FROM TaxOpcode t where t.name LIKE CONCAT(:name,'%') and t.status=:status")
     public List<TaxOpcode> searchDataByNameAndStatus(@Param("name") String name,@Param("status") Status status); 
+	
+	@Query("SELECT t FROM TaxOpcode t where t.name LIKE CONCAT(:name,'%') and t.status IN ('active','inactive')")
+    public List<TaxOpcode> searchDataByNameAndStatusAll(@Param("name") String name);
 	
 	@Query("SELECT t FROM TaxOpcode t where t.name=:name and t.status='active'")
     public List<TaxOpcode> checkDupDataByNameAndStatus(@Param("name") String name); 

@@ -116,8 +116,12 @@ public class TaxRateService extends ServiceBase {
 		List<TaxRateObj> listTaxRateObj = new ArrayList<>();
 		String status = "";
 		try {
+			if(("all").equals(taxRateObjC.getStatus().name())){
+				listTaxRateEntity = taxRateRepository.searchDataByNameAndStatusAll(taxRateObjC.getName());
+			}else{
+				listTaxRateEntity = taxRateRepository.searchDataByNameAndStatus(taxRateObjC.getName(), taxRateObjC.getStatus());
+			}
 			
-			listTaxRateEntity = taxRateRepository.searchDataByNameAndStatus(taxRateObjC.getName(), taxRateObjC.getStatus());
 			for (int i = 0; i < listTaxRateEntity.size(); i++) {
 				TaxRateObj taxRateObj = modelMapper.map(listTaxRateEntity.get(i), TaxRateObj.class);
 				listTaxRateObj.add(taxRateObj);

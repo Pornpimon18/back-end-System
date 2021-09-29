@@ -71,7 +71,7 @@ public class TaxIncomeCodeService extends ServiceBase {
 			ModelMapper modelMapper = new ModelMapper();
 			result = checkDup(taxIncomeCodeObj,ApplicationConstant.ADD);
 			if (!result.equals(ApplicationConstant.DUPLICATE)) {
-				taxIncomeCodeObj.setIncomeCatalogId(IdGenerator.getId());
+				taxIncomeCodeObj.setIncomeCatalogId(taxIncomeCodeObj.getIncomeCatalogId());
 				TaxIncomeCode taxIncomeCodeEntity = modelMapper.map(taxIncomeCodeObj, TaxIncomeCode.class);
 				taxIncomeCodeEntity.setUpdateUser(SecurityUtils.getUserName());
 				taxIncomeCodeEntity.setUpdateTime(new Date());
@@ -128,7 +128,11 @@ public class TaxIncomeCodeService extends ServiceBase {
 		List<TaxIncomeCodeObj> listTaxIncomeCodeObj = new ArrayList<>();
 		String status = "";
 		try {
-			listTaxIncomeCodeEntity = taxIncomeCodeRepository.searchDataByNameAndStatus(taxIncomeCodeObjC.getName(), taxIncomeCodeObjC.getStatus());
+			if(("all").equals(taxIncomeCodeObjC.getStatus().name())){
+				listTaxIncomeCodeEntity = taxIncomeCodeRepository.searchDataByNameAndStatusAll(taxIncomeCodeObjC.getName());
+			}else{
+				listTaxIncomeCodeEntity = taxIncomeCodeRepository.searchDataByNameAndStatus(taxIncomeCodeObjC.getName(), taxIncomeCodeObjC.getStatus());
+			}
 			
 			for (int i = 0; i < listTaxIncomeCodeEntity.size(); i++) {
 				TaxIncomeCodeObj taxIncomeCodeObj = modelMapper.map(listTaxIncomeCodeEntity.get(i), TaxIncomeCodeObj.class);
