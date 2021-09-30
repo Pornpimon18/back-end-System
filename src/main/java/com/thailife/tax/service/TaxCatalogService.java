@@ -117,7 +117,7 @@ public class TaxCatalogService extends ServiceBase {
 		List<TaxCatalogObj> listTaxCatalogObj = new ArrayList<>();
 		String status = "";
 		try {
-			if(("all").equals(taxCatalogObjC.getStatus())){
+			if(("all").equals(taxCatalogObjC.getStatus().name())){
 				listTaxCatalogEntity = taxCatalogRepository.searchDataByNameAndStatusAll(taxCatalogObjC.getName());
 			}else{
 				listTaxCatalogEntity = taxCatalogRepository.searchDataByNameAndStatus(taxCatalogObjC.getName(), taxCatalogObjC.getStatus());
